@@ -1,20 +1,64 @@
 import React from "react";
-// Redux
-import { Link } from "react-router-dom";
+// Formik Validation
+import * as Yup from "yup";
+import { useFormik } from "formik";
 
-import { Row, Col, CardBody, Card, Container } from "reactstrap";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  Card,
+  CardBody,
+  Col,
+  Container,
+  Form,
+  Input,
+  Label,
+  Row,
+} from "reactstrap";
+
 // import images
-import logoSm from "../../assets/images/logo-sm.png";
+import logo from "../../assets/images/logo-sm.png";
 
 const Login = () => {
-  document.title = "Login | Veltrix - React Admin & Dashboard Template";
+  const url = 'http://localhost:7000/grupos/1';
+  const navigate = useNavigate();
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+
+    initialValues: {
+      email: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().required("Ingrese su usuario"),
+    }),
+    onSubmit:  (values) => {
+      console.log(values);
+      sendEmail(values)
+      navigate('/auth-lock-screen')
+      //enviar los datos a la api
+    }
+  });
+  const opciones = {
+    method: 'GET',
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    }),
+    //body: JSON.stringify(email)
+  };
+  const sendEmail=  () =>{
+    fetch(url, opciones)
+    .then(response => {
+      if (response.ok) {
+        console.log('Datos enviados exitosamente', response);
+      } else {
+        throw new Error('Error al enviar datos');
+      }
+    })
+    .catch(error => console.error(error));
+  }
+  document.title = "Ingreso de usuario | Practicasa";
   return (
     <React.Fragment>
-      <div className="home-btn d-none d-sm-block">
-        <Link to="/" className="text-dark">
-          <i className="fas fa-home h2"></i>
-        </Link>
-      </div>
       <div className="account-pages my-5 pt-5">
         <Container>
           <Row className="justify-content-center">
@@ -22,76 +66,79 @@ const Login = () => {
               <Card className="overflow-hidden">
                 <div className="bg-primary">
                   <div className="text-primary text-center p-4">
-                    <h5 className="text-white font-size-20">
-                      Welcome Back !
+                    <h5 className="text-white font-size-20 p-2">
+                      Ingrese su usuario
                     </h5>
-                    <p className="text-white-50">
-                      Sign in to continue to Veltrix.
-                    </p>
-                    <Link to="/" className="logo logo-admin">
-                      <img src={logoSm} height="24" alt="logo" />
+                    <Link to="" className="logo logo-admin">
+                      <img src={logo} height="24" alt="logo" />
                     </Link>
                   </div>
                 </div>
 
                 <CardBody className="p-4">
                   <div className="p-3">
-                    <form className="mt-4" action="#">
+                    <div className="alert alert-success mt-5" role="alert">
+                      Ingrese su usuario para acceder al sistema!
+                    </div>
 
+                    <Form className="mt-4"
+                     onSubmit={(e) => {
+                      e.preventDefault();
+                      validation.handleSubmit();
+                      return false;
+                    }}>
                       <div className="mb-3">
-                        <label className="form-label" htmlFor="username">Username</label>
-                        <input type="text" className="form-control" id="username" placeholder="Enter username" />
+                        <Label htmlFor="email">Usuario</Label>
+                        <Input
+                          type="email"
+                          className="form-control"
+                          id="email"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.email || ""}
+                          invalid={
+                            validation.touched.email && validation.errors.email ? true : false
+                          }
+                        />
+                        {validation.touched.email && validation.errors.email ? (
+                          <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
+                        ) : null}
                       </div>
-
-                      <div className="mb-3">
-                        <label className="form-label" htmlFor="userpassword">Password</label>
-                        <input type="password" className="form-control" id="userpassword" placeholder="Enter password" />
+                      <div className="row mb-0">
+                        <Col xs={12} className="text-end">
+                          <button
+                            className="btn btn-primary w-md waves-effect waves-light"
+                            type="submit"
+                          >
+                            Ingresar
+                          </button>
+                        </Col>
                       </div>
-
-                      <div className="mb-3 row">
-                        <div className="col-sm-6">
-                          <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="customControlInline" />
-                            <label className="form-check-label" htmlFor="customControlInline">Remember me</label>
-                          </div>
-                        </div>
-                        <div className="col-sm-6 text-end">
-                          <button className="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
-                        </div>
-                      </div>
-
-                      <div className="mt-2 mb-0 row">
-                        <div className="col-12 mt-4">
-                          <Link to="/page-recoverpw"><i className="mdi mdi-lock"></i> Forgot your password?</Link>
-                        </div>
-                      </div>
-
-                    </form>
+                    </Form>
                   </div>
                 </CardBody>
               </Card>
 
               <div className="mt-5 text-center">
                 <p>
-                  Don't have an account ?{" "}
+                  ¿No recuerda el usuario?{" "}
                   <Link
-                    to="/pages-register"
+                    to=""
                     className="fw-medium text-primary"
                   >
                     {" "}
-                    Signup now{" "}
+                    Contáctese con el administrador{" "}
                   </Link>{" "}
                 </p>
                 <p className="mb-0">
-                  © {new Date().getFullYear()} Veltrix. Crafted with{" "}
-                  <i className="mdi mdi-heart text-danger"></i> by Themesbrand
+                  © {new Date().getFullYear()} Practicasa. Creado con {" "}
+                  <i className="mdi mdi-heart text-danger"></i> por Digotec
                 </p>
               </div>
             </Col>
           </Row>
         </Container>
-      </div>
-    </React.Fragment>
+      </div> </React.Fragment>
   );
 };
 

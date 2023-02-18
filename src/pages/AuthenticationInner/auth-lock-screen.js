@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
 
-import { Container, Row, Col, CardBody, Card, Form, FormFeedback, Input } from "reactstrap";
+import { useNavigate, Link } from "react-router-dom";
+
+import { Container, 
+  Row, 
+  Col, 
+  CardBody, 
+  Card, 
+  Form, 
+  FormFeedback, 
+  Input, 
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem, } from "reactstrap";
 
 
 // import images
@@ -13,7 +25,10 @@ import logo from "../../assets/images/logo-sm.png";
 import avatar from "../../assets/images/users/user-1.jpg";
 
 const LockScreen = () => {
- 
+  const navigate = useNavigate();
+  const [more_Menu, setmore_Menu] = useState(false)
+  const [selectedOption, setSelectedOption] = useState("");
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -26,10 +41,15 @@ const LockScreen = () => {
     }),
     onSubmit: (values) => {
       console.log(values);
+      navigate('/tables-datatable')
+      //enviar los datos a la api
     }
   });
   document.title = "Ingreso de usuario | Contraseña";
-  
+  //opción seleccionada en el dropdown de empresa
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+  };
   return (
     <React.Fragment>
       <div className="account-pages my-5 pt-sm-5">
@@ -54,11 +74,8 @@ const LockScreen = () => {
                       onSubmit={(e) => {
                         e.preventDefault();
                         validation.handleSubmit();
-                        <Link to="/tables-datatable" >
-                      </Link>
                         return false;
-                      }}
-                      >
+                      }}>
 
                       <div className="pt-3 text-center">
                         
@@ -84,9 +101,27 @@ const LockScreen = () => {
                           <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
                         ) : null}
                          
-                      </div>
+                      </div> 
                       <div className="mb-3">
-                        <label className="form-label" htmlFor="userpassword">Empresas</label>                         
+                        <Dropdown
+                          isOpen={more_Menu}
+                          toggle={() => {
+                            setmore_Menu(!more_Menu)
+                          }}
+                          className="btn-group me-2 mb-2 mb-sm-0"
+                        >
+                          <DropdownToggle
+                            className="btn btn-primary waves-light waves-effect dropdown-toggle"
+                            tag="div"
+                          >
+                            {selectedOption ? selectedOption : "Seleccione una empresa"} 
+                            <i className="mdi mdi-chevron-down ms-1"></i>
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            <DropdownItem onClick={() => handleOptionClick("Practicasa")}>Practica</DropdownItem>
+                            <DropdownItem onClick={() => handleOptionClick("Mercatti")}>Mercatti</DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>                  
                       </div>
                       <div className="row mb-0">
                         <div className="col-12 text-end">
