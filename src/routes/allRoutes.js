@@ -16,17 +16,18 @@ import Emailtemplatebasic from "../pages/EmailTemplate/email-template-basic";
 import Emailtemplatebilling from "../pages/EmailTemplate/email-template-billing";
 
 // Authentication related pages
-import Login from "../pages/Authentication/Login";
+//import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 
 //  // Inner Authentication
-import Login1 from "../pages/AuthenticationInner/Login";
+import Login from "../pages/AuthenticationInner/Login";
+//import Login1 from "../pages/AuthenticationInner/Login";
 import Login2 from "../pages/AuthenticationInner/Login2";
 import Register1 from "../pages/AuthenticationInner/Register";
 import Register2 from "../pages/AuthenticationInner/Register2";
-import Recoverpw from "../pages/AuthenticationInner/Recoverpw";
+//import Recoverpw from "../pages/AuthenticationInner/Recoverpw";
 import Recoverpw2 from "../pages/AuthenticationInner/Recoverpw2";
 import ForgetPwd1 from "../pages/AuthenticationInner/ForgetPassword";
 import LockScreen from "../pages/AuthenticationInner/auth-lock-screen";
@@ -218,7 +219,7 @@ const authRoutes = [
   { path: "/pages-500", component: <Pages500 /> },
  */
   // Authentication Inner
-  { path: "/page-recoverpw", component: <Recoverpw /> },
+  { path: "/login", component: <Login /> },
   { path: "/auth-lock-screen", component: <LockScreen /> },
   /* { path: "/pages-login", component: <Login1 /> },
   { path: "/pages-login-2", component: <Login2 /> },
