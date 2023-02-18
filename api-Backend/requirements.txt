@@ -1,0 +1,10 @@
+Flask
+flask-marshmallow
+Flask-SQLAlchemy
+marshmallow
+marshmallow-sqlalchemy
+pymssql
+python-decouple
+python-dotenv
+SQLAlchemy
+sqlacodegen
