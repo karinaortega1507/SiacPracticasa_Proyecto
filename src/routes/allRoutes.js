@@ -17,10 +17,10 @@ import Emailtemplatebilling from "../pages/EmailTemplate/email-template-billing"
 
 // Authentication related pages
 //import Login from "../pages/Authentication/Login";
-import Logout from "../pages/Authentication/Logout";
+/* import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
-
+ */
 //  // Inner Authentication
 import Login from "../pages/AuthenticationInner/Login";
 //import Login1 from "../pages/AuthenticationInner/Login";
@@ -115,7 +115,8 @@ import PagesDirectory from "../pages/Utility/PagesDirectory";
 import PagesProfile from "pages/Utility/pages-profile";
 
 const userRoutes = [
-  { path: "/tables-datatable", component: <DatatableTables /> },
+  
+  
   /* { path: "/dashboard", component: <Dashboard /> },
 
   // //calendar
@@ -221,6 +222,7 @@ const authRoutes = [
   // Authentication Inner
   { path: "/login", component: <Login /> },
   { path: "/auth-lock-screen", component: <LockScreen /> },
+  { path: "/tables-datatable", component: <DatatableTables /> },
   /* { path: "/pages-login", component: <Login1 /> },
   { path: "/pages-login-2", component: <Login2 /> },
   { path: "/pages-register", component: <Register1 /> },
