@@ -10,37 +10,37 @@ const DatatableTables = () => {
   const data = {
     columns: [
       {
-        label: "Name",
+        label: "Código",
         field: "name",
         sort: "asc",
         width: 150,
       },
       {
-        label: "Position",
+        label: "Linea",
         field: "position",
         sort: "asc",
         width: 270,
       },
       {
-        label: "Office",
+        label: "Marca",
         field: "office",
         sort: "asc",
         width: 200,
       },
       {
-        label: "Age",
+        label: "Medida",
         field: "age",
         sort: "asc",
         width: 100,
       },
       {
-        label: "Start date",
+        label: "Presentación",
         field: "date",
         sort: "asc",
         width: 150,
       },
       {
-        label: "Salary",
+        label: "Descripción",
         field: "salary",
         sort: "asc",
         width: 100,
@@ -48,12 +48,12 @@ const DatatableTables = () => {
     ],
     rows: [
       {
-        name: "Tiger Nixon",
-        position: "System Architect",
-        office: "Edinburgh",
-        age: "61",
-        date: "2011/04/25",
-        salary: "$320",
+        name: " 853020E ",
+        position: "01020501",
+        office: "GRAIM",
+        age: "45X45",
+        date: "(CJ 1.82 MT)",
+        salary: "BOTTICCINO 45X45  (CJ 1.82 MT) ",
       },
       {
         name: "Garrett Winters",
@@ -505,41 +505,20 @@ const DatatableTables = () => {
       },
     ],
   };
-  document.title = "Data Tables | Veltrix - React Admin & Dashboard Template";
+  document.title = "Consulta de Productos";
   return (
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <Breadcrumbs maintitle="Veltrix" title="Tables" breadcrumbItem="Data Tables" />
-
+          <Breadcrumbs maintitle="Practicasa" title="Tables" breadcrumbItem="Productos" />
           <Row>
             <Col className="col-12">
               <Card>
                 <CardBody>
-                  <CardTitle className="h4">Default Datatable </CardTitle>
+                  <CardTitle className="h4">Consulta de Productos </CardTitle>
                   <p className="card-title-desc">
-                    mdbreact DataTables has most features enabled by default, so
-                    all you need to do to use it with your own tables is to call
-                    the construction function:{" "}
-                    <code>&lt;MDBDataTable /&gt;</code>.
-                  </p>
-
-                  <MDBDataTable responsive bordered data={data} />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col className="col-12">
-              <Card>
-                <CardBody>
-                  <CardTitle className="h4">Stripped example </CardTitle>
-                  <p className="card-title-desc">
-                    mdbreact DataTables has most features enabled by default, so
-                    all you need to do to use it with your own tables is to call
-                    the construction function:{" "}
-                    <code>&lt;MDBDataTable striped /&gt;</code>.
+                    Se despliega una tabla con la información de productos.
+                    
                   </p>
 
                   <MDBDataTable responsive striped bordered data={data} />
