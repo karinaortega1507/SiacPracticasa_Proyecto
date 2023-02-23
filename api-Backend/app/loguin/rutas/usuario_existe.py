@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from app.loguin import bp
 from app.extensions import db
+from flask_cors import cross_origin
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema
 
@@ -10,6 +11,7 @@ from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsm
 # }
 # devuelve si el usuario existe o no
 @bp.route('/usuario_existe', methods=['POST'])
+@cross_origin()
 def usuario_existe():
     # Obtener el JSON enviado en la solicitud
     data = request.get_json()
@@ -28,7 +30,11 @@ def usuario_existe():
         # Si se encontró un registro, devolver una respuesta con el estado "ok"
         response = {
             'status': 'ok',
-            'message': 'El usuario existe'
+            'message': 'El usuario existe',
+            'usuario': {
+                "cliciausu": cliciausu,
+                "cliciagrupo": cliciagrupo
+            },
         }
     else:
         # Si no se encontró un registro, devolver una respuesta con el estado "error"

@@ -15,25 +15,31 @@ and b.cliciagrupo = 'Practi' --pempresa
 --3 ingresado a la compañia
 
               --${p_prefijo}.dbo.siacusar where usrcodigo = ${p_usuario} / falta la contrasenia
-select * from SiacPracticasa.dbo.siaccusr where usrcodigo = '­v}xg'
+select * from SiacPracticasa.dbo.siaccusr where usrcodigo = '­v}xg' and usrclave = 'I4bªszuj'
 
 --4 localidad
-select b.locdescri,b.loccodigo from SiacPracticasa.dbo.siactloc a inner join cgblocal b on a.ciacodigo = b.ciacodigo and a.loccodigo = b.loccodigo
-	where a.ciacodigo = '02' and usrcodigo = '­v}xg' and b.locstatus = 'A'
+-- select b.locdescri,b.loccodigo from SiacPracticasa.dbo.siactloc a inner join cgblocal b on a.ciacodigo = b.ciacodigo and a.loccodigo = b.loccodigo
+-- 	where a.ciacodigo = '02' and usrcodigo = '­v}xg' and b.locstatus = 'A'
+-- 	                                     --${p_usuario}
+
+select b.locdescri,b.loccodigo from SiacPracticasa.dbo.siactloc a inner join SiacPracticasa.dbo.cgblocal b on a.ciacodigo = b.ciacodigo and a.loccodigo = b.loccodigo
+	where a.ciacodigo = '01' and usrcodigo = '­v}xg' and b.locstatus = 'A'
 	                                     --${p_usuario}
 
 ---seleccione localidad 
 
 --5 armar menu
-select a.* from siacopc a inner join siactusrweb b on a.opctag = b.opctag and a.modcodigo = b.modcodigo
+select a.* from siacpracticasa.dbo.siacopc a inner join siacpracticasa.dbo.siactusrweb b on a.opctag = b.opctag and a.modcodigo = b.modcodigo
 	where b.ciacodigo = '01' and b.usrcodigo = '­v}xg' and b.modcodigo = 'WEB'
 order by a.opctag
 
 
 
+
+
 SELECT COLUMN_NAME
 FROM SiacPracticasa.INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME = 'siaccusr';
+WHERE TABLE_NAME = 'siacopc';
 
 -- --1 poner usuario
 -- -- fsoft.Practi
