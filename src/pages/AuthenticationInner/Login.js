@@ -1,15 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
+import axios from "axios";
 // Formik Validation
 import * as Yup from "yup";
 import { useFormik } from "formik";
 
 import { useNavigate, Link } from "react-router-dom";
 import {
+  Alert,
   Card,
   CardBody,
   Col,
   Container,
   Form,
+  FormFeedback,
   Input,
   Label,
   Row,
@@ -18,45 +21,61 @@ import {
 // import images
 import logo from "../../assets/images/logo-sm.png";
 
+//const API_URL = process.env.REACT_APP_API;
+//http://127.0.0.1:5000/loguin/usuario_existe 
 const Login = () => {
-  const url = 'http://localhost:7000/grupos/1';
+  const API_URL = 'http://127.0.0.1:5000/loguin/usuario_existe';
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
   const navigate = useNavigate();
+  document.title = "Ingreso de usuario | Practicasa";
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
-
     initialValues: {
       email: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().required("Ingrese su usuario"),
+      email: Yup.string().required("Ingrese su usuario").email("El correo no es válido"),
     }),
-    onSubmit:  (values) => {
-      console.log(values);
-      sendEmail(values)
-      navigate('/auth-lock-screen')
-      //enviar los datos a la api
+   
+    onSubmit: function(values) {
+      const email = values.email.split(".")[0];
+      console.log(values.email.split(".")[0]);
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          user: "\u00adv}xg@Practi"
+          //user: email
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        console.log(data);
+        if (data.status === "ok"){
+          console.log(data.status);
+          navigate('/auth-lock-screen')
+        }
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
     }
+
   });
-  const opciones = {
-    method: 'GET',
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    //body: JSON.stringify(email)
-  };
-  const sendEmail=  () =>{
-    fetch(url, opciones)
-    .then(response => {
-      if (response.ok) {
-        console.log('Datos enviados exitosamente', response);
-      } else {
-        throw new Error('Error al enviar datos');
-      }
-    })
-    .catch(error => console.error(error));
-  }
-  document.title = "Ingreso de usuario | Practicasa";
+  
+
+
   return (
     <React.Fragment>
       <div className="account-pages my-5 pt-5">
@@ -93,9 +112,10 @@ const Login = () => {
                           type="email"
                           className="form-control"
                           id="email"
+                          placeholder="Ingrese su correo"
                           onChange={validation.handleChange}
                           onBlur={validation.handleBlur}
-                          value={validation.values.email || ""}
+                          value={validation.values.email}
                           invalid={
                             validation.touched.email && validation.errors.email ? true : false
                           }
