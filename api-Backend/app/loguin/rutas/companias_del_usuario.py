@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from app.loguin import bp
 from app.extensions import db
+from flask_cors import cross_origin
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema
 
@@ -12,6 +13,7 @@ from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsm
 # }
 # devuelve codigo de compania, nombre de compania, ruta de la base de datos y nombre de la base de datos
 @bp.route('/companias_del_usuario', methods=['POST'])
+@cross_origin()
 def companias_del_usuario():
     # Obtener el JSON enviado en la solicitud
     data = request.get_json()

@@ -14,6 +14,9 @@ def create_app(config_class=Config):
     from app.extensions import ma
     ma.init_app(app)
 
+    from app.extensions import cors
+    cors.init_app(app,resources={r"/*": {"origins": "*", "headers":["Content-Type", "Authorization"]}})
+
     # --------------------------------------
 
     # Register blueprints here
