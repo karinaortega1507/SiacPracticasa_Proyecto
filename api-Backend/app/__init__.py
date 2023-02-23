@@ -24,6 +24,9 @@ def create_app(config_class=Config):
     from app.loguin import bp as loguin_bp
     app.register_blueprint(loguin_bp, url_prefix='/loguin')
 
+    from app.productos import bp as productos_bp
+    app.register_blueprint(productos_bp, url_prefix='/productos')
+
     # sdfvsgedg
 
     # --------------------------------------
