@@ -12,8 +12,8 @@ from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsm
 
 #  recive esta estructura
 # {
-#   "user": "id_usuario"
-#   "password": "password"
+#   "user": "­v}xg",
+#   "password": "I4bªszuj",
 #   "seleccion": 
 #       {
 #           "cliciaciacodigo": "01",

@@ -15,6 +15,8 @@ class Producto(db.Model):
     marcodigo = db.Column(db.String(5))
     medcodigo = db.Column(db.String(3))
     lincodigo = db.Column(db.String(20))
+     # campo temporal del modelo Producto para la cantidad de etiquetas a imprimir
+    tmpcantidadimpresion = db.Column(db.Integer)
 
     __table_args__ = (
       PrimaryKeyConstraint('ciacodigo', 'invcodigo', 'artcodigo', name='pk_inmart'),

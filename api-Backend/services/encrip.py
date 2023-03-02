@@ -7,10 +7,10 @@ import ctypes
 # Carga la DLL
 dll = ctypes.cdll.LoadLibrary("E:/DOCUMENTOS/DIGOTEC/projects/WorkSpace/Veltrix_React_v4.2.0/Admin/api-Backend/services/SiacWebDll.dll")
 
-#encrip (”c¥¥aneE,'D')
+#encrip (”c¥¥aneE",'D')
 #encrip(p_usrcodigo,'E')
 # Define la firma de la función en Python
-encripf = dll.encrip
+encripf = dll.classGeneral
 encripf.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 encripf.restype = ctypes.c_char_p
 

@@ -19,6 +19,7 @@ def obtener_productos():
         Marca.mardescri.label('marca'),
         Presentacion.predescri.label('presentacion'),
         Linea.lindescri.label('linea'),
+        Producto.tmpcantidadimpresion.label('cantidad_etiquetas'),
    ).join(Marca, Producto.marcodigo == Marca.marcodigo)\
     .join(Medida, Producto.medcodigo == Medida.medcodigo)\
     .join(Presentacion, Producto.precodigo == Presentacion.precodigo)\
@@ -29,6 +30,9 @@ def obtener_productos():
         #Producto.artcodigo == '00018'
     ).order_by(Producto.artcodigo).all()
 
+    # El resultado de la consulta es un objeto Row, que no puede ser serializado en JSON directamente.
+    # Para convertir los objetos Row en diccionarios se utiliza el método as_dict() que se puede agregar en el modelo de SQLAlchemy. 
+    # Luego, se puede construir una lista de diccionarios y devolverla como una respuesta JSON
     data = [row._asdict() for row in query_result]
     
     return jsonify(data)
