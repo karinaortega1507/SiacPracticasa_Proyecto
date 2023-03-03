@@ -6,8 +6,9 @@ import { Row, Col, Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import "./datatables.scss";
 
+const BASE_URL = process.env.REACT_APP_API
 const DatatableTables = () => {
-  const API_URL = "http://127.0.0.1:5000/productos/obtener_productos"
+  const API_URL = BASE_URL + "productos/obtener_productos"
   const [productos, setProductos] = useState([]);
 
   // Función para cargar los datos de los productos desde un API

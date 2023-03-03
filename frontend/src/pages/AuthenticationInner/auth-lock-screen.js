@@ -24,10 +24,10 @@ import { Container,
 // import images
 import logo from "../../assets/images/logo-sm.png";
 import avatar from "../../assets/images/users/user-1.jpg";
-
+const BASE_URL = process.env.REACT_APP_API
 const LockScreen = () => {
   //endpoint que retorna los datos de las empresas a las que pertenece el usuario
-  const API_URL = "http://127.0.0.1:5000/loguin/companias_del_usuario";
+  const API_URL = BASE_URL + "loguin/companias_del_usuario";
   const navigate = useNavigate();
   const [more_Menu, setmore_Menu] = useState(false)
   const [more_locate, setmore_locate] = useState(false)
