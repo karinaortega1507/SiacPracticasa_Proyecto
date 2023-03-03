@@ -141,3 +141,6 @@ poetry.lock
 *.pyc
 #coderuner
 tempCodeRunnerFile.py
+
+#files
+services/encrip.py
