@@ -1,1 +1,1 @@
-web: cd frontend && yarn install && yarn build && cd .. && gunicorn api_backend:api-Backend
+web: cd api-Backend && cd app && gunicorn __init__:app
