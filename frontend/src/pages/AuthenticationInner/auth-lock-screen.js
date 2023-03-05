@@ -127,7 +127,7 @@ const LockScreen = () => {
       console.log("Empresa seleccionada",business);
       console.log("Localidad seleccionada",locate);
       localStorage.setItem("authUser",usuarioJSON)
-      navigate('/dashboard')
+      navigate('/pages-starter')
       //enviar los datos a la api
     }
   });

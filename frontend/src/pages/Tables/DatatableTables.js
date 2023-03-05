@@ -4,12 +4,16 @@ import { Row, Col, Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+
+// Import ModalProductos
+import ModalProductos from "../../components/Common/ModalProductos";
 import "./datatables.scss";
 
 const BASE_URL = process.env.REACT_APP_API
 const DatatableTables = () => {
   const API_URL = BASE_URL + "productos/obtener_productos"
   const [productos, setProductos] = useState([]);
+  const [showModal, setShowModal] = useState(false);
 
   // Función para cargar los datos de los productos desde un API
   const cargarProductos =  () => {
@@ -101,6 +105,20 @@ const DatatableTables = () => {
       onCellEdit: (e, codigo) => actualizarCantidadEtiquetas(e, codigo),
     },
   ];
+ 
+  const handleCheckboxChange = (event, rowIndex) => {
+    setData(prevState => {
+      const newState = Object.assign({},prevState );
+      newState.rows[rowIndex].checkbox = event.target.checked;
+      return newState;
+    });
+  };
+
+  // Modal que se muestra cuando se hace clic en una fila 
+    const handleRowClick = () => {
+      setShowModal(true);
+    };
+
   document.title = "Consulta de Productos";
   return (
     <React.Fragment>
@@ -113,10 +131,16 @@ const DatatableTables = () => {
                 <CardBody>
                   <CardTitle className="h4">Consulta de Productos </CardTitle>
                   <p className="card-title-desc">
-                    Se despliega una tabla con la información de productos.
-                    
+                    Se despliega una tabla con la información de productos.  
                   </p>
-                  <MDBDataTable responsive striped bordered  data={{ columns: columnas, rows: productos }} />
+                  <MDBDataTable 
+                      responsive 
+                      striped 
+                      bordered  
+                      data={{ columns: columnas, rows: productos }}
+                      selectableRows
+                      checkboxOnly
+                      onClickCheckbox={handleCheckboxChange}/>
                 </CardBody>
               </Card>
             </Col>

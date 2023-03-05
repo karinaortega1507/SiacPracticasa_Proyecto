@@ -11,7 +11,7 @@ const PagesStarter = () => {
       <div className="page-content">
         <Container fluid>
           {/* Render Breadcrumbs */}
-          <Breadcrumbs maintitle="Veltrix" title="Extra Pages" breadcrumbItem="Starter Page" />
+          <Breadcrumbs maintitle="FutureSoft" title="Practicasa" breadcrumbItem="Inicio" />
         </Container>
       </div>
     </React.Fragment>

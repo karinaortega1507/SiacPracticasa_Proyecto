@@ -118,6 +118,8 @@ const userRoutes = [
   
   { path: "/tables-datatable", component: <DatatableTables /> },
   { path: "/dashboard", component: <Dashboard /> },
+  { path: "/pages-starter", component: <PagesStarter /> },
+  { path: "/tables-editable", component: <EditableTables /> },
   /* { path: "/dashboard", component: <Dashboard /> },
 
   // //calendar

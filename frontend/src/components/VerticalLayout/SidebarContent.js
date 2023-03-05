@@ -13,10 +13,16 @@ import { Link, useLocation } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 
 const SidebarContent = props => {
+  
   const location = useLocation();
   const ref = useRef();
+  //obtiene información sobre la URL actual
   const path = location.pathname;
 
+  /* La función activateParentDropdown toma un elemento como argumento y 
+  agrega clases CSS específicas a él y a sus padres para activar la selección 
+  del elemento. También desplaza la vista para que el elemento esté visible en 
+  la pantalla. */
   const activateParentDropdown = useCallback((item) => {
     item.classList.add("active");
     const parent = item.parentElement;
@@ -55,6 +61,8 @@ const SidebarContent = props => {
     return false;
   }, []);
 
+ /*  La función removeActivation toma una lista de elementos y realiza el proceso inverso, eliminando las clases CSS 
+  que activan la selección y desplazamiento de la vista. */
   const removeActivation = (items) => {
     for (var i = 0; i < items.length; ++i) {
       var item = items[i];
@@ -98,14 +106,18 @@ const SidebarContent = props => {
     }
   };
 
+  /* La función useCallback es un hook de React que se utiliza para memorizar una función, 
+  de manera que se pueda evitar que se cree una nueva instancia de la misma en cada 
+  renderizado del componente. */
   const activeMenu = useCallback(() => {
     const pathName = location.pathname;
     const fullPath = pathName;
     let matchingMenuItem = null;
     const ul = document.getElementById("side-menu");
     const items = ul.getElementsByTagName("a");
-    removeActivation(items);
-
+    removeActivation(items);//La función removeActivation también se utiliza para quitar la activación de los demás elementos del menú.
+    /* La función busca en el menú de la barra lateral un elemento cuyo pathname sea igual al fullPath 
+    de la página actual y luego activa el menú correspondiente utilizando la función activateParentDropdown */
     for (let i = 0; i < items.length; ++i) {
       if (fullPath === items[i].pathname) {
         matchingMenuItem = items[i];
@@ -115,22 +127,33 @@ const SidebarContent = props => {
     if (matchingMenuItem) {
       activateParentDropdown(matchingMenuItem);
     }
-  }, [path, activateParentDropdown]);
+  }, [path, activateParentDropdown]);// La función activeMenu utiliza path y activateParentDropdown como dependencias para useCallback, lo que significa que si cambian, la función se volverá a crear.
 
+  /*  llama a recalculate() en el objeto ref.current. 
+  recalculate() es una función personalizada que recalcula las dimensiones y la posición del objeto. 
+  Esta acción probablemente esté relacionada con el diseño y el estilo de la página. */
   useEffect(() => {
     ref.current.recalculate();
   }, []);
-
+  /* inicializa un nuevo objeto MetisMenu en el elemento #side-menu y luego llama a la función activeMenu(). 
+  MetisMenu es una biblioteca de menú JavaScript que crea menús desplegables, y activeMenu() es una función 
+  personalizada que establece el elemento activo del menú en función de la ruta actual. 
+  Este useEffect se ejecuta una vez, en el momento en que se monta el componente. */
   useEffect(() => {
     new MetisMenu("#side-menu");
     activeMenu();
   }, []);
 
+  /* Se realiza un desplazamiento suave hasta el inicio de la página y luego llama a la función activeMenu(). 
+  Esta acción se ejecuta cada vez que activeMenu cambia, lo que indica que se ha navegado a una nueva ruta y 
+  que el menú activo debe actualizarse en consecuencia. */
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     activeMenu();
   }, [activeMenu]);
 
+    /* Se utiliza para desplazar el scroll de la página hacia el elemento que se le pasa como argumento, 
+    de tal forma que el elemento quede visible en la ventana del navegador. */
   function scrollElement(item) {
     if (item) {
       const currentPosition = item.offsetTop;
@@ -145,16 +168,16 @@ const SidebarContent = props => {
       <SimpleBar style={{ maxHeight: "100%" }} ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
-            <li className="menu-title">{props.t("Main")} </li>
+            <li className="menu-title">{props.t("Inventario")} </li>
             <li>
-              <Link to="/dashboard" className="waves-effect">
-                <i className="ti-home"></i>
-                <span className="badge rounded-pill bg-primary float-end">1</span>
-                <span>{props.t("Dashboard")}</span>
+              <Link to="/tables-datatable" className="waves-effect">
+                <i className="ti-package"></i>
+                {/* <span className="badge rounded-pill bg-primary float-end">1</span> */}
+                <span>{props.t("Productos")}</span>
               </Link>
             </li>
 
-            <li>
+           {/*  <li>
               <Link to="/calendar" className=" waves-effect">
                 <i className="ti-calendar"></i>
                 <span>{props.t("Calendar")}</span>
@@ -177,11 +200,11 @@ const SidebarContent = props => {
                   <Link to="/email-compose">{props.t("Email Compose")} </Link>
                 </li>
               </ul>
-            </li>
+            </li> */}
 
-            <li className="menu-title">{props.t("Components")}</li>
+            <li className="menu-title">{props.t("Facturación")}</li>
 
-            <li>
+            {/* <li>
               <Link to="/#" className="has-arrow waves-effect">
                 <i className="ti-package"></i>
                 <span>{props.t("UI Elements")}</span>
@@ -381,9 +404,9 @@ const SidebarContent = props => {
                   <Link to="/maps-leaflet">{props.t("Leaflet Maps")}</Link>
                 </li>
               </ul>
-            </li>
+            </li> */}
 
-            <li className="menu-title">Extras</li>
+          {/*   <li className="menu-title">Extras</li>
 
             <li>
               <Link to="/#" className="has-arrow waves-effect">
@@ -513,7 +536,7 @@ const SidebarContent = props => {
                   </ul>
                 </li>
               </ul>
-            </li>
+            </li> */}
           </ul>
         </div>
       </SimpleBar>

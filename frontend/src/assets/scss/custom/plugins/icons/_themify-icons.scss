@@ -490,6 +490,11 @@
 }
 .ti-home:before {
 	content: "\e69b";
+	
+}
+//agregado clase para ícono de productos
+.ti-package:before {
+	content:"\e687";
 }
 .ti-help:before {
 	content: "\e69c";
