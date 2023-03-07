@@ -48,15 +48,47 @@ const LockScreen = () => {
     cliciausu: "­v}xg",
     cliciagrupo:"Practi"
   }
+
+  const data_localidades ={
+      user: localStorage.getItem("usuario"),
+      password: "I4bªszuj",
+      seleccion: 
+       {
+           cliciaciacodigo: "01",
+           cliciacianombre: "PRACTICASA",
+           clicianonBD: "SiacPracticasa",
+           cliciarutaBD: "fsoftapptest.futuresoft-ec.com,14666"
+       }
+  }
   const localidades = [
-      {
-        sucursal:"gye", 
-        localidad:"01"
-      },
-      {
-        sucursal:"uio",
-        localidad:"02"
-      }]
+    {
+      localidad: "04",
+      sucursal: "BODEGA LAS AGUAS"
+  },
+  {
+      localidad: "07",
+      sucursal: "BODEGA SAMBO"
+  },
+  {
+      localidad: "03",
+      sucursal: "DICENTRO EUROESTILO"
+  },
+  {
+      localidad: "02",
+      sucursal: "DICENTRO PRACTICASA"
+  },
+  {
+      localidad: "01",
+      sucursal: "MATRIZ - FUSION"
+  },
+  {
+      localidad: "05",
+      sucursal: "PLAZA PROYECTA"
+  },
+  {
+      localidad: "06",
+      sucursal: "PRACTICASA - STONE & BATH"
+  }]
   
   // Se realiza la petición a la API para obtener las empresas y llenar con las opciones el Dropdown
   useEffect(() => {
@@ -84,23 +116,35 @@ const LockScreen = () => {
       });
       setOptionsLocate(localidades)
   },[])
+
+  useEffect(() => {
+    fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      console.log(data);
+      if (data.status === "ok"){
+        console.log(data.status);
+        setOptionsBusiness(data.data); 
+        console.log(optionsBusiness);
+      }
+    })
+    .catch(function(error) {
+      console.error(error);
+    });
+    setOptionsLocate(localidades)
+},[])
  
   //Obtener las localidades
-  /* useEffect(() => {
-    axios
-      .post(API_URL,data)
-      .then(response => {
-          setOptionsLocate(response.data.map(option => ({
-            loccodigo: option.loccodigo,
-            name: option.name,
-          })));
-        })
-        .finally(() => {
-          // Cambiar el estado de carga
-          setIsLoading(false);
-        });
-    
-  },[selectedOption]);  */
+ 
     // Objeto que contiene los datos
     const usuario = { nombre: "Juan", edad: 25 };
 
@@ -237,7 +281,7 @@ const LockScreen = () => {
                           { optionsLocate.map(option => (
                                 <DropdownItem 
                                 key={option.sucursal} 
-                                onClick={() => handleOptionClickLocate(`${option.localidad}`)} required>{option.localidad}</DropdownItem>
+                                onClick={() => handleOptionClickLocate(`${option.sucursal}`)} required>{option.sucursal}</DropdownItem>
                               )) }
                            {/*  <DropdownItem onClick={() => handleOptionClickLocate("01")} required>01</DropdownItem>
                             <DropdownItem onClick={() => handleOptionClickLocate("02")} required>02</DropdownItem> */}

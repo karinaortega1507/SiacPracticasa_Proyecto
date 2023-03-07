@@ -1,5 +1,5 @@
 import React, { useState, useEffect }  from "react";
-import { MDBDataTable } from "mdbreact";
+import { MDBDataTable, MDBModal, MDBModalBody, MDBModalHeader } from "mdbreact";
 import { Row, Col, Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 
 //Import Breadcrumb
@@ -13,7 +13,9 @@ const BASE_URL = process.env.REACT_APP_API
 const DatatableTables = () => {
   const API_URL = BASE_URL + "productos/obtener_productos"
   const [productos, setProductos] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  //const [showModal, setShowModal] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Función para cargar los datos de los productos desde un API
   const cargarProductos =  () => {
@@ -29,9 +31,9 @@ const DatatableTables = () => {
         return response.json();
       })
       .then(function(data) {
-        console.log(data);
+        //console.log(data);
         if (data !== null){
-          console.log(data);
+          //console.log(data);
           setProductos(data);
         }
       })
@@ -106,17 +108,22 @@ const DatatableTables = () => {
     },
   ];
  
-  const handleCheckboxChange = (event, rowIndex) => {
+  /* const handleCheckboxChange = (event, rowIndex) => {
     setData(prevState => {
       const newState = Object.assign({},prevState );
       newState.rows[rowIndex].checkbox = event.target.checked;
       return newState;
     });
-  };
+  }; */
 
   // Modal que se muestra cuando se hace clic en una fila 
-    const handleRowClick = () => {
+    /* const handleRowClick = () => {
       setShowModal(true);
+    }; */
+    const handleRowClick = (rowData) => {
+      console.log (rowData)
+      setSelectedRowData(rowData);
+      setModalOpen(true);
     };
 
   document.title = "Consulta de Productos";
@@ -133,14 +140,21 @@ const DatatableTables = () => {
                   <p className="card-title-desc">
                     Se despliega una tabla con la información de productos.  
                   </p>
-                  <MDBDataTable 
+                 {  <MDBDataTable 
                       responsive 
+                      hover
                       striped 
                       bordered  
                       data={{ columns: columnas, rows: productos }}
-                      selectableRows
-                      checkboxOnly
-                      onClickCheckbox={handleCheckboxChange}/>
+                      clickablerows="true"
+                      onClick={(event, rowData) => {console.log(onclick), handleRowClick(rowData)}}/> }
+                    {/* <DataGrid
+                      rows={productos}
+                      columns={columnas}
+                      pageSize={5}
+                      rowsPerPageOptions={[5]}
+                      checkboxSelection
+/> */}
                 </CardBody>
               </Card>
             </Col>

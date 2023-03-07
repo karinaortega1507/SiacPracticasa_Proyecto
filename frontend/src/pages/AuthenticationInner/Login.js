@@ -38,13 +38,12 @@ const Login = () => {
     }),
    
     onSubmit: function(values) {
-      //const usuario = JSON.parse(`${values.text}`);
-      //const encodedUsuario = JSON.stringify(usuario.replace(/\\\\/g, '\\')); 
-      console.log(values.text);
+      console.log(JSON.stringify(values.text));
+      localStorage.setItem("usuario", values.text);
       fetch(API_URL, {
         method: 'POST',
         body: JSON.stringify({
-          user: "\u00adv}xg@Practi"
+          user: values.text
           //user: "\u00adv}xg@Practi"
         }),
         headers: {
@@ -53,6 +52,7 @@ const Login = () => {
         }
       })
       .then(function(response) {
+        console.log(response.json)
         return response.json();
       })
       .then(function(data) {
