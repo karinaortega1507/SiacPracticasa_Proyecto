@@ -5,7 +5,7 @@ from flask_cors import cross_origin
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema
 
-#  recive esta estructura
+#  recibe esta estructura
 # {
 #   "cliciausu": "id_usuario"
 # }

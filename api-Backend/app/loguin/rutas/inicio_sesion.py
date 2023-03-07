@@ -4,6 +4,7 @@ from app.loguin import bp
 from app.extensions import db
 from flask_cors import cross_origin
 from app.models.DynamicLoguinDB import DynamicLoguinDB, DynamicLoguinDBSchema
+from services.encrip_desencrip import encriptar, desencriptar
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema
 # from app.models.siacPracticasaSiacusr import siacPracticasaSiacusr, siacPracticasaSiacusr_schema_varios, siacPracticasaSiacusr_schema
@@ -27,14 +28,19 @@ from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsm
 @bp.route('/inicio_sesion', methods=['POST'])
 @cross_origin()
 def inicio_sesion():
-    data = request.json
+    data = request.get_json()
+    print(data)
     clicianonBD = data['seleccion']['clicianonBD']
     # schema = {'schema': f'{clicianonBD}.dbo'}
     DynamicLoguinDB.__table_args__["schema"] = f'{clicianonBD}.dbo'
     # print("DynamicLoguinDB.__table_args__", DynamicLoguinDB.__table_args__)
-    usrcodigo = data['user']
-    usrclave = data['password']
+    usuario = data['user']
+    password = data['password']
 
+    #encripta usuario y clave
+    usrcodigo=encriptar(usuario)
+    usrclave =encriptar(password)
+    print(usrclave, usrcodigo)
     result = DynamicLoguinDB.query.filter_by(usrcodigo=usrcodigo).first()
     dynamic_login_schema = DynamicLoguinDBSchema()
 
@@ -47,7 +53,7 @@ def inicio_sesion():
             'status': 'ok',
             'message': 'Iniciaste sesion',
             'data': {
-                "user": usrcodigo,
+                "user": usuario,
                 "seleccion": data['seleccion']
             },
         }
