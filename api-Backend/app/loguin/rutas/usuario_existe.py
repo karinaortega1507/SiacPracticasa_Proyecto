@@ -35,7 +35,7 @@ def usuario_existe():
             'status': 'ok',
             'message': 'El usuario existe',
             'usuario': {
-                "cliciausu": cliciausu,
+                "cliciausu": usuario,
                 "cliciagrupo": cliciagrupo
             },
         }
