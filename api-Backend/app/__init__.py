@@ -30,6 +30,8 @@ def create_app(config_class=Config):
     from app.productos import bp as productos_bp
     app.register_blueprint(productos_bp, url_prefix='/productos')
 
+    from app.proformas import bp as proformas_bp
+    app.register_blueprint(proformas_bp, url_prefix='/proformas')
     # sdfvsgedg
 
     # --------------------------------------

@@ -1,23 +1,31 @@
-#import sys
-#sys.path.append(r'C:\path\to\clr') # Reemplaza la ruta con la ruta de acceso real al módulo clr
-#import clr
 
-import ctypes
 
-# Carga la DLL
-dll = ctypes.cdll.LoadLibrary("E:/DOCUMENTOS/DIGOTEC/projects/WorkSpace/Veltrix_React_v4.2.0/Admin/api-Backend/services/SiacWebDll.dll")
+import json
+import clr
 
-#encrip (”c¥¥aneE,'D')
-#encrip(p_usrcodigo,'E')
-# Define la firma de la función en Python
-encripf = dll.encrip
-encripf.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
-encripf.restype = ctypes.c_char_p
+# clr.AddReference(r"/home/sr-coloma/Documentos/git-folder/SiacPracticasa_Proyecto/api-Backend/services/SiacWebDll.dll")
+clr.AddReference(r"/home/sr-coloma/Documentos/git-folder/SiacPracticasa_Proyecto/api-Backend/services/SiacWebDllv1.dll")
+# clr.AddReference('SiacWebDllv1')
+#clr.AddReference('Microsoft.VisualBasic')
 
-# Usa la función en Python
-texto = "prueba"
-texto_encriptado = encripf(texto.encode(), b"E").decode()
-texto_desencriptado = encripf(texto_encriptado.encode(), b"D").decode()
-print(texto_encriptado)  # Imprime el texto encriptado
-print(texto_desencriptado)  # Imprime el texto desencriptado
+from System import Activator
+from SiacWebDll import ClassGeneral
 
+# Obtener el tipo CLR correspondiente a ClassGeneral
+ClassGeneralType = clr.GetClrType(ClassGeneral)
+
+# Crear una instancia del objeto
+my_object = Activator.CreateInstance(ClassGeneralType)
+
+
+codigo = '{G…V]DV'
+clave ='­||ki'
+normal = 'fsoft'
+
+
+texto_encriptado = my_object.encrip(normal, "E")
+texto_desencriptado1 = my_object.encrip(codigo, "D")
+# texto_desencriptado2 = my_object.encrip(encri2, "D")
+print('USE ENCRIP E ------ Texto normal: fsoft  , Texto encriptado: '+ texto_encriptado)
+print('USE ENCRIP D ------ usr codigo =  '+codigo+ ' Texto normal:' + texto_desencriptado1)
+# print('USE ENCRIP D ------ usr codigo =  '+encri2+ ' Texto normal:' + texto_desencriptado2)
