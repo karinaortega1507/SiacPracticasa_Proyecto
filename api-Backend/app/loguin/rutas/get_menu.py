@@ -1,6 +1,6 @@
 from flask import jsonify, request
 from sqlalchemy import text
-from app.loguin import bp
+from app.login import bp
 from app.extensions import db
 from flask_cors import cross_origin
 

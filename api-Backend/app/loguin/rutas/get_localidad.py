@@ -1,10 +1,10 @@
 from flask import jsonify, request
 from sqlalchemy import text
-from app.loguin import bp
+from app.login import bp
 from app.extensions import db
 from flask_cors import cross_origin
 from app.models.Cgblocal import Cgblocal, CgblocalSchema
-from app.models.DynamicLoguinDB import DynamicLoguinDB, DynamicLoguinDBSchema
+from app.models.DynamicLoginDB import DynamicLoginDB, DynamicLoginDBSchema
 from app.models.Siactloc import Siactloc
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema

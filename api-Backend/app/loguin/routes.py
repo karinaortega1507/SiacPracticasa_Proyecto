@@ -1,5 +1,5 @@
 from flask import jsonify, request, render_template
-from app.loguin import bp
+from app.login import bp
 from app.extensions import db
 from flask_cors import cross_origin
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
@@ -8,7 +8,7 @@ from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsm
 @bp.route('/')
 @cross_origin()
 def index():
-    return "loguin/"#render_template('loguin/index.html')
+    return "login/"#render_template('login/index.html')
 
 # #  recive esta estructura
 # # {
@@ -61,7 +61,7 @@ def index():
 
 @bp.route('/buscar_grupos_de_cliciausu', methods=['POST'])
 @cross_origin()
-def loguin():
+def login():
     # Obtener el JSON enviado en la solicitud
     data = request.get_json()
 

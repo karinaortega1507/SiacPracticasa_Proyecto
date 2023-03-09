@@ -1,7 +1,7 @@
 from app.extensions import db
 from app.extensions import ma
 
-class DynamicLoguinDB(db.Model):
+class DynamicLoginDB(db.Model):
     __tablename__ = 'siaccusr'
     __table_args__ = {'schema': 'SiacPracticasa.dbo'}
     # __table_args__ = {'schema': None}
@@ -70,9 +70,9 @@ class DynamicLoguinDB(db.Model):
     #     self.usrusumsys = usrusumsys
 
 
-class DynamicLoguinDBSchema(ma.SQLAlchemyAutoSchema):
+class DynamicLoginDBSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = DynamicLoguinDB
+        model = DynamicLoginDB
 
-# DynamicLoguinDBSchema = DynamicLoguinDBSchema()
-# DynamicLoguinDBSchemas = DynamicLoguinDBSchema(many=True)
+# DynamicLoginDBSchema = DynamicLoginDBSchema()
+# DynamicLoginDBSchemas = DynamicLoginDBSchema(many=True)

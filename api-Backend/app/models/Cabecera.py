@@ -106,20 +106,22 @@ class Cabecera(db.Model):
     peddetalle2     = db.Column(db.String  )
     peddetalle3     = db.Column(db.String  )
 
+    
+
 
     
 
 class CabeceraSchema(ma.SQLAlchemyAutoSchema):
-    pedfecemi  = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedfecven  = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedfecisys = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedhorisys = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedfecmsys = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedhormsys = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedfecaped = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedhoraped = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedfecapro = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
-    pedhorapro = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedfecemi  = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedfecven  = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedfecisys = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedhorisys = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedfecmsys = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedhormsys = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedfecaped = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedhoraped = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedfecapro = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
+    # pedhorapro = fields.DateTime(format='%Y-%m-%d %H:%M:%S.%f')
     
     class Meta:
         model = Cabecera
