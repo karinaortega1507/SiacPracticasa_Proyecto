@@ -50,6 +50,7 @@ def nuevaCabecera():
         Cxcmcli.ciucodigo,
         Cxcmcli.procodigo
     ).filter(Cxcmcli.clicodigo == '000001').first()
+    ## TODO: no es el first es por ciacodigo
 
     # Serialize the result using Marshmallow schema
     cxcmcli_schema = CxcmcliSchema()
