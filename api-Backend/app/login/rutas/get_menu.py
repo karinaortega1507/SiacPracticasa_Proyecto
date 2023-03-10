@@ -44,10 +44,10 @@ def get_menu():
                     (Siacopc.opctag == Siactusrweb.opctag) &
                     (Siacopc.modcodigo == Siactusrweb.modcodigo))\
                     .filter(Siactusrweb.ciacodigo == cliciaciacodigo,
-                         Siactusrweb.usrcodigo == user,
-                         Siactusrweb.modcodigo == 'WEB')\
+                         Siactusrweb.usrcodigo == user)\
                     .order_by(Siacopc.opctag)\
                     .all()
+                         # Siactusrweb.modcodigo == 'WEB')\
 
     local_schema = SiacopcSchema(many=True)
     output = local_schema.dump(results)

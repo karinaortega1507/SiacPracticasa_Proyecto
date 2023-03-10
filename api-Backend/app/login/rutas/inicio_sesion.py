@@ -29,10 +29,10 @@ from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsm
 @cross_origin()
 def inicio_sesion():
     data = request.get_json()
-    print(data)
-    clicianonBD = data['seleccion']['clicianonBD']
+    # print(data)
+    # clicianonBD = data['seleccion']['clicianonBD']
     # schema = {'schema': f'{clicianonBD}.dbo'}
-    DynamicLoginDB.__table_args__["schema"] = f'{clicianonBD}.dbo'
+    # DynamicLoginDB.__table_args__["schema"] = f'{clicianonBD}.dbo'
     # print("DynamicLoginDB.__table_args__", DynamicLoginDB.__table_args__)
     usuario = data['user']
     password = data['password']

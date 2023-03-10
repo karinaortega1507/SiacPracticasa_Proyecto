@@ -19,7 +19,7 @@ def encriptar (usuario: str):
     # clave ='­||ki'
     #normal= 'fsoft'
     texto_encriptado = my_object.Encrip(usuario, "E")
-    print('USE ENCRIP E ------ Texto normal: fsoft  , Texto encriptado: '+ texto_encriptado)
+    print('USE ENCRIP E ------ Texto normal: '+usuario+'  , Texto encriptado: '+ texto_encriptado)
     return texto_encriptado
 
 def desencriptar (usuario_encriptado: str):
@@ -32,7 +32,7 @@ def desencriptar (usuario_encriptado: str):
     #normal= 'fsoft'
     texto_desencriptado = my_object.Encrip(usuario_encriptado, "D")
     #print('USE ENCRIP E ------ Texto normal: fsoft  , Texto encriptado: '+ texto_encriptado)
-    print('USE ENCRIP D ------ usr codigo =  '+codigo+ ' Texto desencriptado:' + texto_desencriptado)
+    print('USE ENCRIP D ------ usr codigo =  '+usuario_encriptado+ ' Texto desencriptado:' + texto_desencriptado)
     return texto_desencriptado
 
 # encriptar('fsoft')
