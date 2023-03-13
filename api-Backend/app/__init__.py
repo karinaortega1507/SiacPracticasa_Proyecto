@@ -24,12 +24,14 @@ def create_app(config_class=Config):
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    from app.loguin import bp as loguin_bp
-    app.register_blueprint(loguin_bp, url_prefix='/loguin')
+    from app.login import bp as login_bp
+    app.register_blueprint(login_bp, url_prefix='/login')
 
     from app.productos import bp as productos_bp
     app.register_blueprint(productos_bp, url_prefix='/productos')
 
+    from app.proformas import bp as proformas_bp
+    app.register_blueprint(proformas_bp, url_prefix='/proformas')
     # sdfvsgedg
 
     # --------------------------------------

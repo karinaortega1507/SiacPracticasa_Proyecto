@@ -1,6 +1,6 @@
-from app.extensions import db
+from app.extensions import db,PrimaryKeyConstraint
 from app.extensions import ma
-
+ 
 class Siacopc(db.Model):
     __tablename__ = 'siacopc'
     __table_args__ = {'schema': 'SiacPracticasa.dbo'} 
@@ -18,6 +18,11 @@ class Siacopc(db.Model):
     opcimagentype = db.Column(db.String(50))
     opccontroller = db.Column(db.String(50))
     opcaction = db.Column(db.String(50))
+    nivel =  db.Column(db.Integer)
+    item_number = db.Column(db.Integer)
+    padre_id = db.Column(db.Integer)
+
+    
 
 class SiacopcSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

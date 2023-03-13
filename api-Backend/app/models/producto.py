@@ -22,8 +22,18 @@ class Producto(db.Model):
       PrimaryKeyConstraint('ciacodigo', 'invcodigo', 'artcodigo', name='pk_inmart'),
         {'schema': 'SiacPracticasa.dbo'}
     )
+
+    def serialize(self):
+        return{
+            'artcodigo': self.artcodigo,
+            'ciacodigo': self.ciacodigo,
+            'invcodigo': self.invcodigo,
+            'artprodven': self.artprodven,
+            'precodigo': self.precodigo,
+        }
     
 class ProductoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model: Producto
+
 

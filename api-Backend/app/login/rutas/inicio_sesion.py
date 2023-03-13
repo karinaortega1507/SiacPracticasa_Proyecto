@@ -1,9 +1,9 @@
 import json
 from flask import jsonify, request
-from app.loguin import bp
+from app.login import bp
 from app.extensions import db
 from flask_cors import cross_origin
-from app.models.DynamicLoguinDB import DynamicLoguinDB, DynamicLoguinDBSchema
+from app.models.DynamicLoginDB import DynamicLoginDB, DynamicLoginDBSchema
 from services.encrip_desencrip import encriptar, desencriptar
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema
@@ -29,20 +29,26 @@ from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsm
 @cross_origin()
 def inicio_sesion():
     data = request.get_json()
-    print(data)
-    clicianonBD = data['seleccion']['clicianonBD']
+    # print(data)
+    # clicianonBD = data['seleccion']['clicianonBD']
     # schema = {'schema': f'{clicianonBD}.dbo'}
-    DynamicLoguinDB.__table_args__["schema"] = f'{clicianonBD}.dbo'
-    # print("DynamicLoguinDB.__table_args__", DynamicLoguinDB.__table_args__)
+    # DynamicLoginDB.__table_args__["schema"] = f'{clicianonBD}.dbo'
+    # print("DynamicLoginDB.__table_args__", DynamicLoginDB.__table_args__)
     usuario = data['user']
     password = data['password']
 
+
     #encripta usuario y clave
-    usrcodigo=encriptar(usuario)
-    usrclave =encriptar(password)
-    print(usrclave, usrcodigo)
-    result = DynamicLoguinDB.query.filter_by(usrcodigo=usrcodigo).first()
-    dynamic_login_schema = DynamicLoguinDBSchema()
+    # -------------------------------------
+    # usrcodigo=encriptar(usuario)
+    # usrclave =encriptar(password)
+    # TODO: descomentar las dos lineas de arriba y comentar las dos de abajo
+    usrcodigo=usuario
+    usrclave =password
+    # -------------------------------------
+
+    result = DynamicLoginDB.query.filter_by(usrcodigo=usrcodigo).first()
+    dynamic_login_schema = DynamicLoginDBSchema()
 
     tabla = dynamic_login_schema.jsonify(result)
     tabla_dict = json.loads(tabla.data)
@@ -79,11 +85,11 @@ def inicio_sesion():
     # data = request.json
     # clicianonBD = data['seleccion']['clicianonBD']
     # schema = {'schema': f'{clicianonBD}.dbo'}
-    # # DynamicLoguinDB.__tablename__ = 'siaccusr'
-    # DynamicLoguinDB.__table_args__ = schema
+    # # DynamicLoginDB.__tablename__ = 'siaccusr'
+    # DynamicLoginDB.__table_args__ = schema
     # usrcodigo = data['user']
-    # result = DynamicLoguinDB.query.filter_by(usrcodigo=usrcodigo).first()
-    # dynamic_login_schema = DynamicLoguinDBSchema()
+    # result = DynamicLoginDB.query.filter_by(usrcodigo=usrcodigo).first()
+    # dynamic_login_schema = DynamicLoginDBSchema()
     # return dynamic_login_schema.jsonify(result)
 
 

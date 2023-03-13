@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from app.loguin import bp
+from app.login import bp
 from app.extensions import db
 from flask_cors import cross_origin
 from services.encrip_desencrip import encriptar, desencriptar

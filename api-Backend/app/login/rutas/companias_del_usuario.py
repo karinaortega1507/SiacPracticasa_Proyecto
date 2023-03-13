@@ -1,9 +1,10 @@
 from flask import jsonify, request
-from app.loguin import bp
+from app.login import bp
 from app.extensions import db
 from flask_cors import cross_origin
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema
+from services.encrip_desencrip import encriptar
 
 
 #  recive esta estructura
@@ -19,7 +20,12 @@ def companias_del_usuario():
     data = request.get_json()
 
     # Obtener el valor de "cliciausu" del JSON
+    # ----------------------------------------------------------------
+    # cliciausu = encriptar(data.get('cliciausu'))
+    # TODO: descomentar la linea de arriba y comentar la de abajo
     cliciausu = data.get('cliciausu')
+    # ----------------------------------------------------------------
+
 
     # Obtener el valor de "cliciagrupo" del JSON
     cliciagrupo = data.get('cliciagrupo')
