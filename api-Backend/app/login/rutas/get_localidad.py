@@ -8,6 +8,9 @@ from app.models.DynamicLoginDB import DynamicLoginDB, DynamicLoginDBSchema
 from app.models.Siactloc import Siactloc
 from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsmcliusu_schema
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema
+from app.models.siacopc import Siacopc, SiacopcSchema
+from app.models.siactusrweb import Siactusrweb, SiactusrwebSchema
+
 
 
 # {
@@ -75,3 +78,10 @@ def get_localidad():
 
     # # Retorna los resultados
     # return {'result': [dict(row) for row in result]}
+
+
+#-------
+#{
+#   "user": "­v}xg",
+#   "cliciaciacodigo": "01"
+#}

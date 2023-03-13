@@ -24,10 +24,13 @@ from app.models.siactusrweb import Siactusrweb
 #             "locdescri": "BODEGA SAMBO"
 #         },
 # }
+
+
+
+
 @bp.route('/get_menu', methods=['POST'])
 @cross_origin()
 def get_menu():
-
     data = request.get_json()
     cliciaciacodigo = data['seleccion']['cliciaciacodigo']
     user = data['user']
@@ -39,7 +42,7 @@ def get_menu():
     #     .all()
     # return jsonify(resultado)
 
-    results = db.session.query(Siacopc)\
+    results = db.session.query(Siacopc.opctag,Siacopc.opccaption,Siacopc.nivel,Siacopc.item_number,Siacopc.padre_id)\
                     .join(Siactusrweb,
                     (Siacopc.opctag == Siactusrweb.opctag) &
                     (Siacopc.modcodigo == Siactusrweb.modcodigo))\

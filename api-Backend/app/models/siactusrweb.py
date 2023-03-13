@@ -13,6 +13,8 @@ class Siactusrweb(db.Model):
     usrusuisys = db.Column(db.String(10))
     usrestisys = db.Column(db.String(40))
     usraccion = db.Column(db.String(6))
+    id_item = db.Column(db.Integer)
+
 
 class SiactusrwebSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
