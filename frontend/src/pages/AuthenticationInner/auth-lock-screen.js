@@ -36,7 +36,12 @@ const LockScreen = () => {
   const [optionsBusiness, setOptionsBusiness] = useState([]);
   const [optionsLocate, setOptionsLocate] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [passwordValue, setPasswordValue] = useState("");
+  const [data_localidades, setDataLocalidades] = useState({});
+  useEffect(() => {
+    // Aquí se actualiza el valor de la contraseña y se guarda el estado para poder usarla
+    // en cualquier parte del código
+  }, [passwordValue]);
   /* const data = {
     cliciausu: localStorage.getItem("cliciausu"),
     cliciagrupo: localStorage.getItem("cliciagrupo")
@@ -49,17 +54,7 @@ const LockScreen = () => {
     cliciagrupo:"Practi"
   }
 
-  const data_localidades ={
-      user: localStorage.getItem("usuario"),
-      password: "I4bªszuj",
-      seleccion: 
-       {
-           cliciaciacodigo: "01",
-           cliciacianombre: "PRACTICASA",
-           clicianonBD: "SiacPracticasa",
-           cliciarutaBD: "fsoftapptest.futuresoft-ec.com,14666"
-       }
-  }
+  
   const localidades = [
     {
       localidad: "04",
@@ -104,9 +99,7 @@ const LockScreen = () => {
         return response.json();
       })
       .then(function(data) {
-        console.log(data);
         if (data.status === "ok"){
-          console.log(data.status);
           setOptionsBusiness(data.data); 
           console.log(optionsBusiness);
         }
@@ -114,34 +107,14 @@ const LockScreen = () => {
       .catch(function(error) {
         console.error(error);
       });
-      setOptionsLocate(localidades)
+      //setOptionsLocate(localidades)
   },[])
 
   useEffect(() => {
-    fetch(API_URL, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    })
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
-      console.log(data);
-      if (data.status === "ok"){
-        console.log(data.status);
-        setOptionsBusiness(data.data); 
-        console.log(optionsBusiness);
-      }
-    })
-    .catch(function(error) {
-      console.error(error);
-    });
-    setOptionsLocate(localidades)
+    
 },[])
+
+  
  
   //Obtener las localidades
  
@@ -157,13 +130,12 @@ const LockScreen = () => {
     initialValues: {
       password: ''    
     },
-    validationSchema: Yup.object({
+    /* validationSchema: Yup.object({
       password: Yup.string().required("Ingrese su contraseña"),
       /* business: Yup.mixed().oneOf(optionsBusiness).required('Debe seleccionar una opción.'),
-      locate: Yup.mixed().oneOf(optionsLocate).required('Debe seleccionar una opción.'), */
-    }),
+      locate: Yup.mixed().oneOf(optionsLocate).required('Debe seleccionar una opción.'), 
+    }), */
     onSubmit: (values) => {
-      console.log(values.password);
       console.log(selectedOption);
       console.log(selectedOptionLocate);
       const business = optionsBusiness.find((business) => business.cliciacianombre === selectedOption);
@@ -173,13 +145,84 @@ const LockScreen = () => {
       localStorage.setItem("authUser",usuarioJSON)
       navigate('/pages-starter')
       //enviar los datos a la api
-    }
+    },
+    validateOnChange: true,
+    validate: (values) => {
+      const errors = {};
+      if (!values.password) {
+        errors.password = "El campo es requerido";
+      }
+      return errors;
+    },
   });
+  // Se llama cada vez que se cambia el valor del campo de contraseña. 
+  // Toma el objeto del evento como argumento y utiliza la propiedad target del objeto 
+  // del evento para obtener el nuevo valor del campo de contraseña. 
+  const handlePasswordChange = (event) => {
+    const { value } = event.target;
+    // Llama a la función setPasswordValue para actualizar el estado del componente con el 
+    // nuevo valor de la contraseña. 
+    setPasswordValue(value);
+    validation.handleChange(event); // realizar cualquier validación adicional que pueda ser necesaria.
+  };
+  // actualiza y valida el valor del campo de contraseña en un formulario
+  // se llama cuando el campo de contraseña pierde el enfoque
+  const handlePasswordBlur = (event) => {
+    validation.handleBlur(event);
+  };
   document.title = "Ingreso de usuario | Contraseña";
   //opción seleccionada en el dropdown de empresa
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
+  
+  //si cambia la empresa seleccionada se actualizarán los campos 
+  //que se envian en la solicitud de las locialidades
+  const handleChangeClick = (option) => {
+    console.log(option.cliciaciacodigo, option.cliciacianombre);
+    //console.log(passwordValue);
+    const dataFormat ={
+      user: localStorage.getItem("usuario"),
+      password: passwordValue,
+      seleccion: 
+       {
+           cliciaciacodigo: option.cliciaciacodigo,
+           cliciacianombre: option.cliciacianombre,
+           //PRACTICASA: nombre que debe añadirse al prefijo Siac de la base de datos
+           //El nombre de la base de datos queda como SiacPracticasa
+           clicianonBD: "Siac" + option.cliciacianombre.charAt(0).toLocaleUpperCase() + option.cliciacianombre.slice(1).toLocaleLowerCase(),
+           cliciarutaBD: "fsoftapptest.futuresoft-ec.com,14666"
+       }
+       
+  }
+  //console.log(dataFormat)
+  setDataLocalidades(dataFormat)
+  getLocalidades();
+  };
+
+  const getLocalidades = () => {
+    fetch(BASE_URL+"loguin/get_localidad", {
+      method: 'POST',
+      body: JSON.stringify(data_localidades),
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      console.log(data)
+      if (data !== null){
+        setOptionsLocate(data); 
+        console.log(optionsLocate);
+      }
+    })
+    .catch(function(error) {
+      console.error(error);
+    });
+  }
   const handleOptionClickLocate = (option) => {
     setSelectedOptionLocate(option);
   };
@@ -223,9 +266,10 @@ const LockScreen = () => {
                           placeholder="Enter password"
                           type="password"
                           id="password"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
+                          onChange={handlePasswordChange}
+                          onBlur={handlePasswordBlur}
                           value={validation.values.password || ""}
+                          
                           invalid={
                             validation.touched.password && validation.errors.password ? true : false
                           }
@@ -254,7 +298,7 @@ const LockScreen = () => {
                               { optionsBusiness.map(option => (
                                 <DropdownItem 
                                 key={option.cliciaciacodigo} 
-                                onClick={() => handleOptionClick(`${option.cliciacianombre}`)} required>{option.cliciacianombre}</DropdownItem>
+                                onClick={() => {handleOptionClick(`${option.cliciacianombre}`); handleChangeClick(option)}} required>{option.cliciacianombre}</DropdownItem>
                               )) }
                                
                             {/* <DropdownItem onClick={() => handleOptionClick("Practicasa")}>Practica</DropdownItem>
