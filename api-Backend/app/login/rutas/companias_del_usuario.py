@@ -20,7 +20,12 @@ def companias_del_usuario():
     data = request.get_json()
 
     # Obtener el valor de "cliciausu" del JSON
-    cliciausu = encriptar(data.get('cliciausu'))
+    # ----------------------------------------------------------------
+    # cliciausu = encriptar(data.get('cliciausu'))
+    # TODO: descomentar la linea de arriba y comentar la de abajo
+    cliciausu = data.get('cliciausu')
+    # ----------------------------------------------------------------
+
 
     # Obtener el valor de "cliciagrupo" del JSON
     cliciagrupo = data.get('cliciagrupo')

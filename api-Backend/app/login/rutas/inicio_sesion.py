@@ -37,10 +37,16 @@ def inicio_sesion():
     usuario = data['user']
     password = data['password']
 
+
     #encripta usuario y clave
-    usrcodigo=encriptar(usuario)
-    usrclave =encriptar(password)
-    print(usrclave, usrcodigo)
+    # -------------------------------------
+    # usrcodigo=encriptar(usuario)
+    # usrclave =encriptar(password)
+    # TODO: descomentar las dos lineas de arriba y comentar las dos de abajo
+    usrcodigo=usuario
+    usrclave =password
+    # -------------------------------------
+
     result = DynamicLoginDB.query.filter_by(usrcodigo=usrcodigo).first()
     dynamic_login_schema = DynamicLoginDBSchema()
 
