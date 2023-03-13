@@ -49,8 +49,11 @@ def nuevaCabecera():
         Cxcmcli.regcodigo,
         Cxcmcli.ciucodigo,
         Cxcmcli.procodigo
-    ).filter(Cxcmcli.clicodigo == '000001').first()
+    ).filter(Cxcmcli.clicodigo == '000001',
+             Cxcmcli.ciacodigo == data['ciacodigo']
+    ).first()
     ## TODO: no es el first es por ciacodigo
+    ## DONE: ya lo arregle
 
     # Serialize the result using Marshmallow schema
     cxcmcli_schema = CxcmcliSchema()
@@ -174,7 +177,7 @@ def nuevaCabecera():
     try:
         db.session.add(_nuevaCabecera)
         db.session.commit()
-        return {'mensaje': 'cabecera creada'}
+        return {'mensaje': 'cabecera creada exitosamente'}
     
     except Exception as e:
         print(e)

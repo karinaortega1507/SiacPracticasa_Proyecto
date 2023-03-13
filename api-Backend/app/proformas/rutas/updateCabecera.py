@@ -36,7 +36,8 @@ def actualizarCabecera():
     if cabecera is None:
         return jsonify({'error': f'No se encontró ninguna cabecera con numped {numped}'}), 404
 
-    cabecera.user       =   data['user']
+    cabecera.pedestisys =   data['user']
+    cabecera.pedestmsys =   data['user']
     cabecera.pedtivapor =   data['pedtivapor']
     cabecera.pedsubtot  =   data['pedsubtot']
     cabecera.pediva     =   data['pediva']
