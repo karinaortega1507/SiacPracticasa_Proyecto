@@ -9,6 +9,10 @@ from app.models.fsbsmcliusu import fsbsmcliusu, fsbsmcliusu_schema_varios, fsbsm
 from app.models.fsbsmclicia import fsbsmclicia, fsbsmclicia_schema_varios, fsbsmclicia_schema
 # from app.models.siacPracticasaSiacusr import siacPracticasaSiacusr, siacPracticasaSiacusr_schema_varios, siacPracticasaSiacusr_schema
 
+#Authorization JWT
+from flask_jwt_extended import create_access_token
+from datetime import timedelta
+import app
 
 
 #  recive esta estructura
@@ -54,7 +58,17 @@ def inicio_sesion():
     tabla_dict = json.loads(tabla.data)
     # usrcodigo = tabla_dict['usrcodigo']
 
-    if tabla_dict["usrcodigo"] == usrcodigo and tabla_dict["usrclave"] == usrclave:
+    
+    if  tabla_dict["usrcodigo"] == usrcodigo and tabla_dict["usrclave"] == usrclave :
+
+        #Generar un json web token para dar autorización
+        payload = {
+            'user': usuario
+        }
+        #JWT_SECRET:access_token.decode('UTF-8')_KEY es el password para encriptar el token 
+        access_token = create_access_token(identity= data,expires_delta=timedelta(hours=1), additional_claims=payload)
+
+
         response = {
             'status': 'ok',
             'message': 'Iniciaste sesion',
@@ -62,6 +76,7 @@ def inicio_sesion():
                 "user": usuario,
                 "seleccion": data['seleccion']
             },
+            'access_token':access_token
         }
     else:
         response = {
