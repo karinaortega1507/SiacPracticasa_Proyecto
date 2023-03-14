@@ -16,6 +16,10 @@ class Config:
                     config_env('DB_PASS') +'@' + \
                     config_env('DB_SERVER') + ':' + \
                     config_env('DB_PORT') + '/?charset=utf8'
+    
+    #https://www.grc.com/passwords.htm
+    JWT_SECRET_KEY = "3586628C0BB9D78199A1550BBC6CA9E1B1E29C7D8D771B4FF9D86EB95CA01624"
+
 
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -1,6 +1,8 @@
 from flask import Flask
 
 from config import Config
+from flask_jwt_extended import JWTManager
+from flask import jsonify
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -17,6 +19,7 @@ def create_app(config_class=Config):
     from app.extensions import cors
     cors.init_app(app,resources={r"/*": {"origins": "*", "headers":["Content-Type", "Authorization"]}})
 
+    jwt = JWTManager(app)
     # --------------------------------------
 
     # Register blueprints here
@@ -44,6 +47,22 @@ def create_app(config_class=Config):
     @app.errorhandler(500)
     def internal_server_error(e):
         return '<h1>500</h1><p>An internal error occurred.</p>', 500
+
+
+
+    @jwt.expired_token_loader
+    def handle_jwt_error(jwt_header, jwt_payload):
+        
+        return jsonify({'err': {
+            'msg':"El token ha caducado"
+        }}), 401
+
+    @jwt.invalid_token_loader
+    def handle_jwt_error(err):
+        return jsonify({'err': {
+            'msg':"El token es inválido"
+        }}), 401
+
     
     # --------------------------------------
     # test page
