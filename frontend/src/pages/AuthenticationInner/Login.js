@@ -24,7 +24,7 @@ import logo from "../../assets/images/logo-sm.png";
 const BASE_URL = process.env.REACT_APP_API;
 //http://127.0.0.1:5000/loguin/usuario_existe 
 const Login = () => {
-  const API_URL = BASE_URL + 'loguin/usuario_existe';
+  const API_URL = BASE_URL + 'login/usuario_existe';
   const navigate = useNavigate();
   document.title = "Ingreso de usuario | Practicasa";
   const validation = useFormik({

@@ -27,7 +27,7 @@ import avatar from "../../assets/images/users/user-1.jpg";
 const BASE_URL = process.env.REACT_APP_API
 const LockScreen = () => {
   //endpoint que retorna los datos de las empresas a las que pertenece el usuario
-  const API_URL = BASE_URL + "loguin/companias_del_usuario";
+  const API_URL = BASE_URL + "login/companias_del_usuario";
   const navigate = useNavigate();
   const [more_Menu, setmore_Menu] = useState(false)
   const [more_locate, setmore_locate] = useState(false)
@@ -201,7 +201,7 @@ const LockScreen = () => {
   };
 
   const getLocalidades = () => {
-    fetch(BASE_URL+"loguin/get_localidad", {
+    fetch(BASE_URL+"login/get_localidad", {
       method: 'POST',
       body: JSON.stringify(data_localidades),
       headers: {
