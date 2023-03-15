@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 from flask import jsonify, request
+from app.models.Detalle import Detalle
 from app.proformas import bp
 from app.extensions import db
 from flask_cors import cross_origin
@@ -21,17 +22,22 @@ from flask_cors import cross_origin
 @cross_origin()
 def updateDetalle():
     data = request.json
-    # (select clicodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
-    clicodigo = Cabecera.query.filter_by(pednumped=data['pednumped']).first()
+    numped = data['numped']
+    ciacodigo = data['ciacodigo']
 
-    # (select lincodigo from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-    lincodigo = inmart.query.filter_by(artcodigo=data['artcodigo']).first()
+    detalle = Detalle.query.filter_by(pednumped=numped, ciacodigo=ciacodigo).first()
+    if detalle is None:
+        return jsonify({'error': f'No se encontró ninguna detalle con numped {numped}'}), 404
 
-    # (select vencodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
-    vencodigo = Cabecera.query.filter_by(pednumped=data['pednumped']).first()
+    # detalle.ciacodigo = data["ciacodigo"],
+    # detalle.pednumped = data["pednumped"],
+    detalle.pedsecuen = data["pedsecuen"],
+    detalle.facnumfac = data["facnumfac"],
+    detalle.pedtipo = data["pedtipo"],
+    detalle.pedapliiva = data["pedapliiva"],
+    detalle.factippag = data["factippag"],
+    detalle.moncodigo = data["moncodigo"],
 
-    # (select zoncodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
-    zoncodigo = Cabecera.query.filter_by(pednumped=data['pednumped']).first()
+    db.session.commit()
 
-    # (select artprecventa1 from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-    artprecventa1 = inmart.query.filter_by(artcodigo=data['artcodigo']).first()
+    return jsonify({'message': f'detalle con numped {numped} actualizada exitosamente'})
