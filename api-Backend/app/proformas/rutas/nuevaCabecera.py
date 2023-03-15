@@ -68,7 +68,7 @@ def nuevaCabecera():
     
     hoy = datetime.now().strftime("%Y-%m-%d 00:00:00.%f")[:-3]
     hoy_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
-    print(hoy)
+    
     _nuevaCabecera = Cabecera(
         ciacodigo =	'01',
         pednumped =	data['numped'],

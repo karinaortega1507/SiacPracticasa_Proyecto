@@ -11,7 +11,7 @@ from flask_cors import cross_origin
 
 # recive esta estructura:
 # {
-    # "user": "user",
+#   "user": "user",
 #   "ciacodigo": "ciacodigo",
 #   "pednumped": "pednumped",
 #   "pedsecuen": "pedsecuen", # TODO: va incrementadndo con un query
@@ -25,36 +25,49 @@ from flask_cors import cross_origin
 @cross_origin()
 def nuevoDetalle():
     data = request.json
+
     # (select clicodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
-    clicodigo = Cabecera.query.filter_by(pednumped=data['pednumped']).first()
+    # (select vencodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
+    # (select zoncodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
+    # (select mesacodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
+    query_cabecera = db.session.query(
+        Cabecera.clicodigo,
+        Cabecera.vencodigo,
+        Cabecera.zoncodigo,
+        # Cabecera.mesacodigo,
+    ).filter(Cabecera.pednumped == data['pednumped']
+    ).first()
+
+    clicodigo = query_cabecera.clicodigo
+    vencodigo = query_cabecera.vencodigo
+    zoncodigo = query_cabecera.zoncodigo
+
 
     # (select lincodigo from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-    lincodigo = inmart.query.filter_by(artcodigo=data['artcodigo']).first()
-
-    # (select vencodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
-    vencodigo = Cabecera.query.filter_by(pednumped=data['pednumped']).first()
-
-    # (select zoncodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
-    zoncodigo = Cabecera.query.filter_by(pednumped=data['pednumped']).first()
-
     # (select artprecventa1 from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-    artprecventa1 = inmart.query.filter_by(artcodigo=data['artcodigo']).first()
+    # (select (artprecventa1*0.12) * @pedcantidad from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
+    # (select (artprecventa1* @pedcantidad) from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
+    # (select ((artprecventa1*0.12) + artprecventa1)*@pedcantidad from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
+    # (select artdescri from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
+    query_inmart = db.session.query(
+        inmart.lincodigo,
+        inmart.artprecventa1,
+        inmart.artdescri,
+    ).filter(Cabecera.artcodigo == data['artcodigo']
+    ).first()
+
+    lincodigo = query_inmart.lincodigo
 
     # TODO: preguntar aqui por la multiplcacion LA MULTIPLICACION es por sysiva/100
-    # (select (artprecventa1*0.12) * @pedcantidad from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-    artprecventa1_12 = inmart.query.filter_by(artcodigo=data['artcodigo']).first().artprecventa1 # TODO: hacer la multiplicacion
+    artprecventa1 = query_inmart.artprecventa1
+    artprecventa1_12 = query_inmart.artprecventa1 * 0.12
+    artprecventa1_pedcantidad = query_inmart.artprecventa1 * data['pedcantidad']
+    artprecventa1_12_pedcantidad = (query_inmart.artprecventa1 * 0.12) + query_inmart.artprecventa1 * data['pedcantidad']
+   
+    artdescri = query_inmart.artdescri
 
-    # (select (artprecventa1* @pedcantidad) from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-    artprecventa1_pedcantidad = inmart.query.filter_by(artcodigo=data['artcodigo']).first()
 
-    # (select ((artprecventa1*0.12) + artprecventa1)*@pedcantidad from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-    artprecventa1_12_pedcantidad = inmart.query.filter_by(artcodigo=data['artcodigo']).first()
 
-    # (select artdescri from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-    artdescri = inmart.query.filter_by(artcodigo=data['artcodigo']).first()
-
-    # (select mesacodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
-    mesacodigo = Cabecera.query.filter_by(pednumped=data['pednumped']).first()
 
     hoy = datetime.now().strftime("%Y-%m-%d 00:00:00.%f")[:-3]
     hoy_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
@@ -62,83 +75,81 @@ def nuevoDetalle():
     _nuevoDetalle = Detalle(
         #TODO aqui esta el tipcodigo ademas de otros campos
         # select  * from SiacPracticasa.dbo.cxcmcli where clicodigo ='000001' and ciacodigo ='01'
-
-        ciacodigo =	@ciacodigo,
-        pednumped =	@pednumped,
-        pedsecuen =	@pedsecuen,
-        facnumfac =	NULL,
+        ciacodigo =	data['ciacodigo'],
+        pednumped =	data['pednumped'],
+        pedsecuen =	data['pedsecuen'],
+        facnumfac =	None,
         pedtipo =	'PR' ,
         pedapliiva =	-1, #TODO: viene de inmart campo artapliiva
         factippag =	'EFE', #ta bien, viene de cxcbformapag
         moncodigo =	'D',
         pedcambio =	0.00,
-        pedfecemi =	${fechaSistema},
-        clicodigo =	(select clicodigo from SiacIlsaboremio.dbo.facped where pednumped =@pednumped),
-        loccodigo =	@loccodigo,
+        pedfecemi =	hoy,
+        clicodigo =	clicodigo,
+        loccodigo =	data['loccodigo'],
         cliprecio =	1, # precio que maneja el cliente TODO2
-        pedstatus =	@pedstatus,
+        pedstatus =	data['pedstatus'],
         bodcodigo =	'', # inbbod es la tabla, es el codigo de la bodega, TODO: recivir en el json
         invcodigo =	'01',
-        artcodigo =	@artcodigo,
+        artcodigo =	data['artcodigo'],
         precodigo =	'01',#TODO: viene de inmart campo precodigo
         coscodigo =	'',
-        lincodigo =	(select lincodigo from SiacIlsaboremio.dbo.inmart where artcodigo = @artcodigo),
-        vencodigo =	(select vencodigo from SiacIlsaboremio.dbo.facped where pednumped = @pednumped),
-        zoncodigo =	(select zoncodigo from SiacIlsaboremio.dbo.facped where pednumped = @pednumped),
+        lincodigo =	lincodigo,
+        vencodigo =	vencodigo,
+        zoncodigo =	zoncodigo,
         sercodigo =	'',
-        pedcantidad =	@pedcantidad,
+        pedcantidad =	data['pedcantidad'],
         pedcosto =	0.000000,
         pedcostodol =	0.000000,
-        pedpreven =	(select artprecventa1 from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
+        pedpreven =	artprecventa1,
         pedvaldesglo =	0.000000,
         pedvaldesc =	0.000000,
         pedvalrec =	0.000000,
         pediva =	12.00, #TODO esta en siacsys campo es sysiva
-
-        # TODO: subir todos una posicion
-        pedvaliva =	#
-        pedvalor =	(select (artprecventa1*0.12) * @pedcantidad from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-        pedvaltot =	(select (artprecventa1* @pedcantidad) from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-        pedfecisys =	(select ((artprecventa1*0.12) + artprecventa1)*@pedcantidad from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-        pedhorisys =	${fechaSistema},
-        pedusuisys =	CONVERT (time, ${horaSistema}),
-        pedestisys =	@pedusuisys,
-        pedfecmsys =	User, #TODO2 lo envia por post pero podria ser el nombre de la maquina o la ip
-        pedhormsys =	${fechaSistema},
-        pedusumsys =	CONVERT (time, ${horaSistema}),
-        pedestmsys =	@pedusuisys, # es usuario modifica osea va en el update del delatte
-        tipcodigo =	User,
-        pedpordesc =	'001', #TODO: esta en cxcmcli campo tipcodigo mirar arriba en el query
-        pedusudesc =	0.000000,
-        artaplipro =	'',
-        pedvalinter =	0, #TODO2 aplica promocion en el futuro
-        medcodigo =	0.000000,
-        marcodigo =	'UNI', #TODO: viene de inmart campo medcodigo
-        artpeso =	'ISM',#TODO: viene de inmart campo marcodigo
-        artserie =	'0.00',#TODO: viene de inmart campo artpeso
-        artservicio =	0,#TODO: viene de inmart campo artserie
-        artexpins =	-1,#TODO: viene de inmart campo artservicio
-        audnumxml =	0,#TODO: viene de inmart campo artexpins
-        artfaccero =	NULL,
-        integracodigo =	0,#TODO: viene de inmart campo artfaccero
+        pedvaliva =	artprecventa1_12,
+        pedvalor =	artprecventa1_pedcantidad,
+        pedvaltot =	artprecventa1_12_pedcantidad,
+        pedfecisys =	hoy,
+        pedhorisys =	hoy_hora,
+        pedusuisys =	data['pedusuisys'],
+        pedestisys =	data['user'], #TODO2 lo envia por post pero podria ser el nombre de la maquina o la ip
+        pedfecmsys =	hoy,
+        pedhormsys =	hoy_hora,
+        pedusumsys =	data['pedusuisys'], # es usuario modifica osea va en el update del delatte
+        pedestmsys =	data['user'],
+        tipcodigo =	'001', #TODO: esta en cxcmcli campo tipcodigo mirar arriba en el query
+        pedpordesc =	0.000000,
+        pedusudesc =	'',
+        artaplipro =	0, #TODO2 aplica promocion en el futuro
+        pedvalinter =	0.000000,
+        medcodigo =	'UNI', #TODO: viene de inmart campo medcodigo
+        marcodigo =	'ISM',#TODO: viene de inmart campo marcodigo
+        artpeso =	'0.00',#TODO: viene de inmart campo artpeso
+        artserie =	0,#TODO: viene de inmart campo artserie
+        artservicio =	-1,#TODO: viene de inmart campo artservicio
+        artexpins =	0,#TODO: viene de inmart campo artexpins
+        audnumxml =	None,
+        artfaccero =	0,#TODO: viene de inmart campo artfaccero
+        integracodigo =	'000',
         proyectocodigo =	'000',
-        pedfecposent =	'000',
-        pedcantfacturado =	${fechaSistema},
-        pedpordescori =	0.000000, # como es nuevodetalle va cero, para actualizar se ha de poner datos
-        pedprecioori =	0.000000,# como es nuevodetalle va cero, para actualizar se ha de poner datos
-        prosecuen =	0.000000,
-        jefecodigo =	1, #TODO: vamo a ver maniana en la auditoria XD
-        artdescri =	'000',
-        pedusuaped =	(select artdescri from SiacIlsaboremio.dbo.inmart where artcodigo=@artcodigo),
-        pedfecaped =	NULL,
-        pedhoraped =	NULL,
-        pedestaped =	NULL,
-        pedusuapro =	NULL,
-        pedfecapro =	NULL,
-        pedhorapro =	NULL,
-        pedestapro =	NULL,
-    
+        pedfecposent =	hoy,
+        pedcantfacturado =	0.000000, # como es nuevodetalle va cero, para actualizar se ha de poner datos
+        pedpordescori =	0.000000,# como es nuevodetalle va cero, para actualizar se ha de poner datos
+        pedprecioori =	0.000000,
+        prosecuen =	1, #TODO: vamo a ver maniana en la auditoria XD
+        jefecodigo =	'000',
+        artdescri =	artdescri,
+        pedusuaped =	None,
+        pedfecaped =	None,
+        pedhoraped =	None,
+        pedestaped =	None,
+        pedusuapro =	None,
+        pedfecapro =	None,
+        pedhorapro =	None,
+        pedestapro = None
     )
+
+
     try:
         db.session.add(_nuevoDetalle)
         db.session.commit()
