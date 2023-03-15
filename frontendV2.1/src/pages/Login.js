@@ -30,16 +30,49 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    //validate if user exists in the db
+    try{
+      if(!email.match(/[^\s@]+@[^\s@]+/gi)){
+        throw new Error("Ese usuario no está registrado")
+      }
+
+      const options = {
+        method: 'POST',
+        body: JSON.stringify({
+          user: email
+          //user: "\u00adv}xg@Practi"
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      }
+
+      let response = await fetch("login/usuario_existe",options)
+      response = await response.json()
+      console.log(response)
+
+      if (response.status === "ok"){
+        console.log(response.status);
+        //navigate('/auth-lock-screen')
+      }
+      
+
+    }catch(err){
+      if(err instanceof Error){
+        console.error(err)
+      }
+      console.error(err)
+
+    }
   };
 
   return (
-    <Grid  container justify="center">
+    <Grid  container justifyContent="center">
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Typography component="h1" variant="h5">
@@ -58,19 +91,6 @@ const Login = () => {
               autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
             <Button
               type="submit"
