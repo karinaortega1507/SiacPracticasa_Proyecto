@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   TextField,
@@ -6,7 +6,12 @@ import {
   Paper,
   Typography,
   Grid,
+  Container
 } from "@material-ui/core";
+//My assests
+import loginImages from "../helpers/login/getImgs"
+import { LoginContext } from "../contexts/LoginContext";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,12 +29,20 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor:"#406AF5"
+  },
+
+  img:{ width: '50px', 
+  height: '50px', 
+  marginRight:"8px"
   },
 }));
 
 const Login = () => {
   const classes = useStyles();
+  const navigate = useNavigate()
   const [email, setEmail] = useState("");
+  const{setUserExists} = useContext(LoginContext)
 
   const handleSubmit = async(event) => {
     event.preventDefault();
@@ -57,8 +70,9 @@ const Login = () => {
       console.log(response)
 
       if (response.status === "ok"){
+        setUserExists(response)
         console.log(response.status);
-        //navigate('/auth-lock-screen')
+        navigate('/loginInner',{replace:true})
       }
       
 
@@ -72,39 +86,55 @@ const Login = () => {
   };
 
   return (
-    <Grid  container justifyContent="center">
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-        <div className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Sign in
+
+    <Container maxWidth={false} style={{ height: '100vh' }} justify="center" >
+      <Grid container justifyContent="center" alignItems="center" style={{ height: '100%' }}>
+        <Grid item xs={12} sm={8} md={6} lg={4}>
+          <Paper elevation={3} style={{ padding: '32px' }}>
+          <div className={classes.paper} >
+
+        <Grid container justifyContent="flex-start" alignItems="center" >
+          <Grid item style={{ paddingBottom: '20px' }}>
+          <img src={loginImages.logoSmall} alt="Logo de la empresa" className={classes.img} />
+          </Grid>         
+          <Typography component="h1" variant="h5" style={{fontWeight:"bolder", fontSize:"15px"}}>
+            FUTURESOFT
           </Typography>
-          <form className={classes.form} onSubmit={handleSubmit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-          </form>
-        </div>
+        </Grid>
+
+        <Typography component="h1" variant="h5" style={{fontWeight:"bolder"}}>
+          Iniciar sesión
+        </Typography>
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Usuario"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Iniciar sesión
+          </Button>
+        </form>
+      </div>
+          </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+    </Container>
+    
   );
 };
 
